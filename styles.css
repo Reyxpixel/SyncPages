@@ -168,13 +168,12 @@ img {
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 0rem;
+  gap: 0.5rem;
 }
 
 .logo-image {
   height: 1.8rem;
   width: auto;
-  margin-right: 0.8rem;
 }
 
 .logo-primary {
