@@ -1,7 +1,8 @@
 /* Base Styles */
 :root {
   --primary: #0099ff;
-  --primary-dark: #0077cc;
+  --primary-dark: #0066cc; /* Darkened for better hover effect */
+  --primary-darker: #004c99; /* Even darker for enhanced hover */
   --primary-light: rgba(0, 153, 255, 0.1);
   --primary-glow: rgba(0, 153, 255, 0.3);
   --background: #000000;
@@ -91,10 +92,16 @@ img {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+.btn-primary:hover,
+.btn-outline:hover,
+.btn-light:hover {
+  color: white; /* Ensure text color remains visible on hover */
+  transform: translateY(-3px); /* Increased from -1px to -3px */
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
 .btn-primary:hover {
-  background-color: var(--primary-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: var(--primary-darker); /* Use darker color for hover */
 }
 
 .btn-outline {
@@ -104,8 +111,9 @@ img {
 }
 
 .btn-outline:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: var(--muted);
+  background-color: rgba(255, 255, 255, 0.1); /* Slightly darker background */
+  border-color: var(--primary);
+  color: var(--foreground); /* Ensure text color remains visible */
 }
 
 .btn-light {
@@ -114,7 +122,8 @@ img {
 }
 
 .btn-light:hover {
-  background-color: #f5f5f5;
+  background-color: #e6e6e6; /* Darker background on hover */
+  color: var(--background); /* Ensure text color remains visible */
 }
 
 .btn-sm {
@@ -157,6 +166,15 @@ img {
   font-weight: 700;
   text-decoration: none;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+}
+
+.logo-image {
+  height: 1.8rem;
+  width: auto;
+  margin-right: 0.8rem;
 }
 
 .logo-primary {
@@ -353,10 +371,11 @@ img {
   background-color: rgba(17, 17, 17, 0.5);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 2.5rem;
+  padding: 3rem; /* Increased from 2.5rem to 3rem */
   transition: var(--transition);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
+  min-height: 280px; /* Added min-height to make cards longer */
 }
 
 .feature-card:hover {
@@ -446,8 +465,130 @@ img {
 
 .chart-container {
   position: relative;
-  height: 250px;
+  height: 300px; /* Increased height for better visibility */
   margin-bottom: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2); /* Slight background for better contrast */
+  border-radius: var(--radius);
+  padding: 1rem;
+}
+
+/* Manual Charts Styles */
+.manual-chart {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Line Chart */
+#salesChartManual {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  height: 100%;
+  padding-bottom: 30px;
+  background-image: linear-gradient(to bottom, transparent 9%, rgba(255, 255, 255, 0.05) 10%);
+  background-size: 100% 10%;
+  position: relative;
+}
+
+#salesChartManual::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, rgba(0, 153, 255, 0.8) 0%, rgba(0, 153, 255, 0.8) 100%) no-repeat,
+    linear-gradient(to right, rgba(0, 102, 204, 0.7) 0%, rgba(0, 102, 204, 0.7) 100%) no-repeat;
+  background-size: calc(100% - 20px) 2px, calc(100% - 20px) 2px;
+  background-position: 10px 30%, 10px 80%;
+  pointer-events: none;
+}
+
+#salesChartManual::after {
+  content: "";
+  position: absolute;
+  bottom: 30px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Pie Chart */
+.pie-chart {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#channelsChartManual {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: conic-gradient(
+    rgba(0, 153, 255, 0.8) 0% 65%,
+    rgba(51, 181, 229, 0.8) 65% 85%,
+    rgba(0, 102, 204, 0.8) 85% 95%,
+    rgba(100, 149, 237, 0.8) 95% 100%
+  );
+  box-shadow: 0 0 20px rgba(0, 153, 255, 0.3);
+}
+
+#channelsChartManual::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Bar Chart */
+#trafficChartManual {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 100%;
+  padding: 0 20px 30px;
+  background-image: linear-gradient(to bottom, transparent 9%, rgba(255, 255, 255, 0.05) 10%);
+  background-size: 100% 10%;
+  position: relative;
+}
+
+#trafficChartManual::after {
+  content: "";
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  width: calc(100% - 40px);
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+#trafficChartManual::before {
+  content: "Mon Tue Wed Thu Fri Sat Sun";
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 1.2rem;
+  padding-left: 0.6rem;
+}
+
+#trafficChartManual .bar {
+  width: 40px;
+  background-color: rgba(0, 153, 255, 0.8);
+  border-radius: 4px 4px 0 0;
+  position: relative;
 }
 
 .chart-legend {
@@ -740,7 +881,7 @@ img {
   display: grid;
   grid-template-columns: 1fr;
   gap: 3rem;
-  max-width: 800px;
+  max-width: 1000px; /* Increased from 800px */
   margin: 0 auto;
 }
 
@@ -880,6 +1021,14 @@ img {
   }
 }
 
+/* Create a two-column layout for form fields to make form shorter */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+/* Update media query for contact form layout */
 @media (min-width: 768px) {
   .main-nav {
     display: block;
@@ -907,7 +1056,7 @@ img {
   }
 
   .contact-container {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr; /* Changed from 1fr 1fr to make form wider */
   }
 }
 
@@ -917,7 +1066,7 @@ img {
   }
 
   .features-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* Changed from 4 to 2 columns to make cards wider */
   }
 
   .testimonials-grid,

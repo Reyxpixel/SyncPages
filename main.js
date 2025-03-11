@@ -1,4 +1,3 @@
-import { Chart } from "@/components/ui/chart"
 // DOM Elements
 const header = document.getElementById("header")
 const mobileMenuToggle = document.querySelector(".mobile-menu-toggle")
@@ -13,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initPlanSelection()
   initContactForm()
   initAnimations()
-  initCharts()
+  createManualCharts()
 })
 
 // Scroll Effects
@@ -125,6 +124,7 @@ function initContactForm() {
       }
     })
 
+    // Handle form submission
     contactForm.addEventListener("submit", (e) => {
       e.preventDefault()
 
@@ -138,19 +138,73 @@ function initContactForm() {
         return
       }
 
-      // In a real implementation, you would send this data to your server
-      // For this demo, we'll just show a success message
-      showFormSuccess(`Thank you for your interest in our ${plan} plan! We'll contact you soon.`)
+      // Create form data
+      const formData = new FormData(contactForm)
 
-      // Reset form
-      contactForm.reset()
-
-      // Remove active class from all inputs
-      formInputs.forEach((input) => {
-        input.parentElement.classList.remove("input-active")
+      // Submit the form using fetch
+      fetch(contactForm.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
       })
+        .then((response) => {
+          if (response.ok) {
+            // Show success message
+            showFormSuccess(`Thank you for your interest in our ${plan} plan! We'll contact you soon.`)
+
+            // Launch confetti
+            launchConfetti()
+
+            // Reset form
+            contactForm.reset()
+
+            // Remove active class from all inputs
+            formInputs.forEach((input) => {
+              input.parentElement.classList.remove("input-active")
+            })
+          } else {
+            throw new Error("Form submission failed")
+          }
+        })
+        .catch((error) => {
+          showFormError("There was a problem submitting your form. Please try again.")
+          console.error("Error:", error)
+        })
     })
   }
+}
+
+// Launch confetti animation
+function launchConfetti() {
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ["#0099ff", "#ffffff", "#00c16a"],
+  })
+
+  // Add more confetti after a delay
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0 },
+      colors: ["#0099ff", "#ffffff", "#00c16a"],
+    })
+  }, 250)
+
+  setTimeout(() => {
+    confetti({
+      particleCount: 50,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1 },
+      colors: ["#0099ff", "#ffffff", "#00c16a"],
+    })
+  }, 400)
 }
 
 // Show form error message
@@ -199,6 +253,103 @@ function showFormSuccess(message) {
   contactForm.prepend(successDiv)
 }
 
+// Create manual charts
+function createManualCharts() {
+  // Create Sales Growth Chart
+  const salesChart = document.getElementById("salesChartManual")
+  if (salesChart) {
+    // Create line chart with bars to represent data points
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    const withWebsiteData = [10, 25, 45, 70, 90, 120, 150, 180, 210, 250, 280, 320]
+    const withoutWebsiteData = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65]
+
+    // Find max value for scaling
+    const maxValue = Math.max(...withWebsiteData)
+
+    // Create data points
+    months.forEach((month, index) => {
+      // With website data point
+      const withWebsiteHeight = (withWebsiteData[index] / maxValue) * 70
+
+      const withWebsitePoint = document.createElement("div")
+      withWebsitePoint.className = "data-point"
+      withWebsitePoint.style.position = "absolute"
+      withWebsitePoint.style.bottom = `${withWebsiteHeight + 30}px`
+      withWebsitePoint.style.left = `${(index / (months.length - 1)) * 100}%`
+      withWebsitePoint.style.width = "8px"
+      withWebsitePoint.style.height = "8px"
+      withWebsitePoint.style.backgroundColor = "rgba(0, 153, 255, 0.8)"
+      withWebsitePoint.style.borderRadius = "50%"
+      withWebsitePoint.style.transform = "translate(-50%, 50%)"
+      withWebsitePoint.style.zIndex = "2"
+      withWebsitePoint.title = `${month}: ${withWebsiteData[index]}`
+      salesChart.appendChild(withWebsitePoint)
+
+      // Without website data point
+      const withoutWebsiteHeight = (withoutWebsiteData[index] / maxValue) * 70
+      const withoutWebsitePoint = document.createElement("div")
+      withoutWebsitePoint.className = "data-point"
+      withoutWebsitePoint.style.position = "absolute"
+      withoutWebsitePoint.style.bottom = `${withoutWebsiteHeight + 30}px`
+      withoutWebsitePoint.style.left = `${(index / (months.length - 1)) * 100}%`
+      withoutWebsitePoint.style.width = "8px"
+      withoutWebsitePoint.style.height = "8px"
+      withoutWebsitePoint.style.backgroundColor = "rgba(0, 102, 204, 0.7)"
+      withoutWebsitePoint.style.borderRadius = "50%"
+      withoutWebsitePoint.style.transform = "translate(-50%, 50%)"
+      withoutWebsitePoint.style.zIndex = "2"
+      withoutWebsitePoint.title = `${month}: ${withoutWebsiteData[index]}`
+      salesChart.appendChild(withoutWebsitePoint)
+
+      // Add month label
+      if (index % 2 === 0) {
+        const monthLabel = document.createElement("div")
+        monthLabel.className = "month-label"
+        monthLabel.textContent = month
+        monthLabel.style.position = "absolute"
+        monthLabel.style.bottom = "10px"
+        monthLabel.style.left = `${(index / (months.length - 1)) * 100}%`
+        monthLabel.style.transform = "translateX(-50%)"
+        monthLabel.style.fontSize = "0.75rem"
+        monthLabel.style.color = "var(--muted)"
+        salesChart.appendChild(monthLabel)
+      }
+    })
+  }
+
+  // Create Traffic Chart (Bar Chart)
+  const trafficChart = document.getElementById("trafficChartManual")
+  if (trafficChart) {
+    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    const trafficData = [1200, 1900, 1700, 2100, 2300, 1500, 1300]
+
+    // Find max value for scaling
+    const maxValue = Math.max(...trafficData)
+
+    // Create bars
+    days.forEach((day, index) => {
+      const barHeight = (trafficData[index] / maxValue) * 80
+      const bar = document.createElement("div")
+      bar.className = "bar"
+      bar.style.height = `${barHeight}%`
+      bar.title = `${day}: ${trafficData[index]} visitors`
+
+      // Add value label on top of bar
+      const valueLabel = document.createElement("div")
+      valueLabel.textContent = trafficData[index]
+      valueLabel.style.position = "absolute"
+      valueLabel.style.top = "-25px"
+      valueLabel.style.left = "50%"
+      valueLabel.style.transform = "translateX(-50%)"
+      valueLabel.style.fontSize = "0.75rem"
+      valueLabel.style.color = "var(--muted-light)"
+      bar.appendChild(valueLabel)
+
+      trafficChart.appendChild(bar)
+    })
+  }
+}
+
 // Animations
 function initAnimations() {
   // Simple reveal animation for elements
@@ -222,213 +373,6 @@ function initAnimations() {
     .forEach((element) => {
       observer.observe(element)
     })
-}
-
-// Charts
-function initCharts() {
-  // Load Chart.js from CDN if not already loaded
-  if (typeof Chart === "undefined") {
-    const script = document.createElement("script")
-    script.src = "https://cdn.jsdelivr.net/npm/chart.js"
-    script.onload = createCharts
-    document.head.appendChild(script)
-  } else {
-    createCharts()
-  }
-}
-
-function createCharts() {
-  // Set Chart.js defaults for all charts
-  if (Chart.defaults) {
-    Chart.defaults.color = "#aaaaaa"
-    Chart.defaults.font.family = "'Inter', sans-serif"
-    Chart.defaults.elements.line.borderWidth = 2
-    Chart.defaults.elements.point.radius = 3
-    Chart.defaults.elements.point.hoverRadius = 5
-  }
-
-  // Sales Growth Chart
-  const salesCtx = document.getElementById("salesChart")
-  if (salesCtx) {
-    new Chart(salesCtx.getContext("2d"), {
-      type: "line",
-      data: {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [
-          {
-            label: "With Website",
-            data: [10, 25, 45, 70, 90, 120, 150, 180, 210, 250, 280, 320],
-            backgroundColor: "rgba(0, 153, 255, 0.1)",
-            borderColor: "rgba(0, 153, 255, 0.8)",
-            borderWidth: 2,
-            tension: 0.4,
-            pointBackgroundColor: "rgba(0, 153, 255, 1)",
-          },
-          {
-            label: "Without Website",
-            data: [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65],
-            backgroundColor: "rgba(100, 100, 100, 0.1)",
-            borderColor: "rgba(100, 100, 100, 0.7)",
-            borderWidth: 2,
-            tension: 0.4,
-            pointBackgroundColor: "rgba(100, 100, 100, 1)",
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            mode: "index",
-            intersect: false,
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            titleColor: "#fff",
-            bodyColor: "#fff",
-            borderColor: "#333",
-            borderWidth: 1,
-            padding: 10,
-            cornerRadius: 8,
-            titleFont: {
-              weight: "bold",
-            },
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "rgba(255, 255, 255, 0.05)",
-            },
-            ticks: {
-              color: "rgba(255, 255, 255, 0.7)",
-              padding: 10,
-            },
-          },
-          x: {
-            grid: {
-              color: "rgba(255, 255, 255, 0.05)",
-            },
-            ticks: {
-              color: "rgba(255, 255, 255, 0.7)",
-              padding: 10,
-            },
-          },
-        },
-      },
-    })
-  }
-
-  // Customer Acquisition Channels
-  const channelsCtx = document.getElementById("channelsChart")
-  if (channelsCtx) {
-    new Chart(channelsCtx.getContext("2d"), {
-      type: "doughnut",
-      data: {
-        labels: ["Website", "Social Media", "Referrals", "Other"],
-        datasets: [
-          {
-            data: [65, 20, 10, 5],
-            backgroundColor: [
-              "rgba(0, 153, 255, 0.8)",
-              "rgba(0, 193, 106, 0.8)",
-              "rgba(255, 153, 0, 0.8)",
-              "rgba(160, 174, 192, 0.8)",
-            ],
-            borderColor: [
-              "rgba(0, 153, 255, 1)",
-              "rgba(0, 193, 106, 1)",
-              "rgba(255, 153, 0, 1)",
-              "rgba(160, 174, 192, 1)",
-            ],
-            borderWidth: 1,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        cutout: "70%",
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            titleColor: "#fff",
-            bodyColor: "#fff",
-            borderColor: "#333",
-            borderWidth: 1,
-            padding: 10,
-            cornerRadius: 8,
-          },
-        },
-      },
-    })
-  }
-
-  // Website Traffic Chart
-  const trafficCtx = document.getElementById("trafficChart")
-  if (trafficCtx) {
-    new Chart(trafficCtx.getContext("2d"), {
-      type: "bar",
-      data: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        datasets: [
-          {
-            label: "Visitors",
-            data: [1200, 1900, 1700, 2100, 2300, 1500, 1300],
-            backgroundColor: "rgba(0, 153, 255, 0.8)",
-            borderColor: "rgba(0, 153, 255, 1)",
-            borderWidth: 0,
-            borderRadius: 4,
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            backgroundColor: "rgba(0, 0, 0, 0.8)",
-            titleColor: "#fff",
-            bodyColor: "#fff",
-            borderColor: "#333",
-            borderWidth: 1,
-            padding: 10,
-            cornerRadius: 8,
-          },
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            grid: {
-              color: "rgba(255, 255, 255, 0.05)",
-            },
-            ticks: {
-              color: "rgba(255, 255, 255, 0.7)",
-              padding: 10,
-            },
-          },
-          x: {
-            grid: {
-              display: false,
-            },
-            ticks: {
-              color: "rgba(255, 255, 255, 0.7)",
-              padding: 10,
-            },
-          },
-        },
-      },
-    })
-  }
 }
 
 // Helper function to animate elements when they come into view

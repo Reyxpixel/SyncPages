@@ -8,13 +8,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="styles.css">
+  <!-- Add favicon -->
+  <link rel="icon" type="image/png" href="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/favicon-Hv7tq2GmuahQmgyWC6rbLcjw2yZott.png">
 </head>
 <body>
   <header class="header" id="header">
     <div class="container">
       <div class="header-content">
         <div class="logo">
-          <a href="/">
+          <a href="index.html">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/PageSync_Transparent_Large-ylUCgAmMNAJVoW77sJNanzyoBjEXyz.png" alt="PageSync Logo" class="logo-image">
             <span class="logo-primary">Page</span><span class="logo-secondary">Sync</span>
           </a>
         </div>
@@ -130,7 +133,8 @@
           <div class="analytics-card">
             <h3 class="analytics-title">Sales Growth After Website Launch</h3>
             <div class="chart-container">
-              <canvas id="salesChart"></canvas>
+              <!-- Replace canvas with manually drawn chart -->
+              <div id="salesChartManual" class="manual-chart"></div>
             </div>
             <div class="chart-legend">
               <div class="legend-item">
@@ -138,7 +142,7 @@
                 <span>With Website</span>
               </div>
               <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(100, 100, 100, 0.7);"></div>
+                <div class="legend-color" style="background-color: rgba(0, 102, 204, 0.7);"></div>
                 <span>Without Website</span>
               </div>
             </div>
@@ -146,27 +150,33 @@
           <div class="analytics-card">
             <h3 class="analytics-title">Customer Acquisition Channels</h3>
             <div class="chart-container">
-              <canvas id="channelsChart"></canvas>
+              <!-- Replace canvas with manually drawn chart -->
+              <div id="channelsChartManual" class="manual-chart pie-chart"></div>
             </div>
             <div class="chart-legend">
               <div class="legend-item">
                 <div class="legend-color" style="background-color: rgba(0, 153, 255, 0.8);"></div>
-                <span>Website</span>
+                <span>Website (65%)</span>
               </div>
               <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(0, 193, 106, 0.8);"></div>
-                <span>Social Media</span>
+                <div class="legend-color" style="background-color: rgba(51, 181, 229, 0.8);"></div>
+                <span>Social Media (20%)</span>
               </div>
               <div class="legend-item">
-                <div class="legend-color" style="background-color: rgba(255, 153, 0, 0.8);"></div>
-                <span>Referrals</span>
+                <div class="legend-color" style="background-color: rgba(0, 102, 204, 0.8);"></div>
+                <span>Referrals (10%)</span>
+              </div>
+              <div class="legend-item">
+                <div class="legend-color" style="background-color: rgba(100, 149, 237, 0.8);"></div>
+                <span>Other (5%)</span>
               </div>
             </div>
           </div>
           <div class="analytics-card" style="grid-column: span 2;">
             <h3 class="analytics-title">Weekly Website Traffic</h3>
             <div class="chart-container">
-              <canvas id="trafficChart"></canvas>
+              <!-- Replace canvas with manually drawn chart -->
+              <div id="trafficChartManual" class="manual-chart bar-chart"></div>
             </div>
           </div>
           <div class="analytics-card" style="grid-column: span 2;">
@@ -255,16 +265,17 @@
           <div class="pricing-card">
             <div class="pricing-header">
               <h3 class="pricing-title">Basic</h3>
-              <p class="pricing-price">₹899</p>
-              <p class="pricing-period">one-time payment</p>
+              <p class="pricing-price">₹2,499</p>
+              <p class="pricing-period">~₹1,199 for hosting domain + Site</p>
             </div>
             <div class="pricing-features">
               <h4 class="pricing-features-title">What's included</h4>
               <ul>
-                <li><i class="fas fa-check"></i> 5-page responsive website</li>
-                <li><i class="fas fa-check"></i> Contact form</li>
+                <li><i class="fas fa-check"></i> 2-3 website pages</li>
+                <li><i class="fas fa-check"></i> Contact forms</li>
                 <li><i class="fas fa-check"></i> Basic SEO setup</li>
                 <li><i class="fas fa-check"></i> Mobile-friendly design</li>
+                <li><i class="fas fa-check"></i> Light backend</li>
               </ul>
               <a href="#contact" class="btn btn-primary btn-block" data-plan="Basic">Get started</a>
             </div>
@@ -272,17 +283,17 @@
           <div class="pricing-card featured">
             <div class="pricing-header">
               <h3 class="pricing-title">Professional</h3>
-              <p class="pricing-price">₹2499</p>
-              <p class="pricing-period">one-time payment</p>
+              <p class="pricing-price">₹5,499</p>
+              <p class="pricing-period">~₹1,499 for hosting domain + Site</p>
             </div>
             <div class="pricing-features">
               <h4 class="pricing-features-title">What's included</h4>
               <ul>
-                <li><i class="fas fa-check"></i> 10-page responsive website</li>
-                <li><i class="fas fa-check"></i> Advanced contact forms</li>
-                <li><i class="fas fa-check"></i> Comprehensive SEO setup</li>
+                <li><i class="fas fa-check"></i> Everything in Basic plan</li>
+                <li><i class="fas fa-check"></i> 4-5 website pages</li>
+                <li><i class="fas fa-check"></i> Customised elements</li>
                 <li><i class="fas fa-check"></i> Social media integration</li>
-                <li><i class="fas fa-check"></i> Google Analytics setup</li>
+                <li><i class="fas fa-check"></i> Backend elements setup</li>
               </ul>
               <a href="#contact" class="btn btn-primary btn-block" data-plan="Professional">Get started</a>
             </div>
@@ -291,16 +302,17 @@
             <div class="pricing-header">
               <h3 class="pricing-title">Enterprise</h3>
               <p class="pricing-price">Custom</p>
-              <p class="pricing-period">Contact for pricing</p>
+              <p class="pricing-period">~₹2,499 for hosting domain + Site</p>
             </div>
             <div class="pricing-features">
               <h4 class="pricing-features-title">What's included</h4>
               <ul>
-                <li><i class="fas fa-check"></i> Unlimited pages</li>
+                <li><i class="fas fa-check"></i> Everything in Professional plan</li>
+                <li><i class="fas fa-check"></i> Minimum of 10-15 pages</li>
                 <li><i class="fas fa-check"></i> E-commerce functionality</li>
-                <li><i class="fas fa-check"></i> Custom integrations</li>
-                <li><i class="fas fa-check"></i> Advanced SEO strategy</li>
-                <li><i class="fas fa-check"></i> Dedicated account manager</li>
+                <li><i class="fas fa-check"></i> Customised Integrations</li>
+                <li><i class="fas fa-check"></i> Advanced management tools</li>
+
               </ul>
               <a href="#contact" class="btn btn-primary btn-block" data-plan="Enterprise">Contact sales</a>
             </div>
@@ -326,22 +338,27 @@
           <p class="section-description">Fill out the form below and we'll get back to you as soon as possible</p>
         </div>
         <div class="contact-container">
-          <form id="contact-form" class="contact-form">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" name="name" required>
+          <!-- Update the form with the getform.io action -->
+          <form id="contact-form" class="contact-form" action="https://getform.io/f/ajjmozma" method="POST">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" name="email" required>
-            </div>
-            <div class="form-group">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone">
-            </div>
-            <div class="form-group">
-              <label for="company">Company Name</label>
-              <input type="text" id="company" name="company">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone">
+              </div>
+              <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" name="company">
+              </div>
             </div>
             <div class="form-group">
               <label for="plan">Selected Plan</label>
@@ -354,9 +371,9 @@
             </div>
             <div class="form-group">
               <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5"></textarea>
+              <textarea id="message" name="message" rows="4"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-block">
+            <button type="submit" class="btn btn-primary btn-block" id="submit-btn">
               <i class="fas fa-paper-plane"></i> Submit
             </button>
           </form>
@@ -366,32 +383,23 @@
               <i class="fas fa-envelope"></i>
               <div>
                 <h3 class="feature-title">Email Us</h3>
-                <p>support@pagesync.com</p>
-                <p>sales@pagesync.com</p>
+                <p>PageSync.com@gmail.com</p>
               </div>
             </div>
             <div class="contact-info-item">
               <i class="fas fa-phone"></i>
               <div>
-                <h3 class="feature-title">Call Us</h3>
-                <p>+91 98765 43210</p>
-                <p>Monday-Friday, 9am-6pm IST</p>
+                <h3 class="feature-title">Contact Us</h3>
+                <p>Instagram</p>
+                <p>@TheSyncPages</p>
               </div>
             </div>
-            <div class="contact-info-item">
-              <i class="fas fa-map-marker-alt"></i>
-              <div>
-                <h3 class="feature-title">Visit Us</h3>
-                <p>123 Tech Park, Bangalore</p>
-                <p>Karnataka, India 560001</p>
-              </div>
-            </div>
-            <div class="contact-social">
+            <!-- <div class="contact-social">
               <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
               <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
               <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
               <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -404,7 +412,9 @@
     </div>
   </footer>
 
-  <script src="main.js"></script>
+  <!-- Add confetti.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="main.js"></script>
 </body>
 </html>
 
