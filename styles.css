@@ -168,7 +168,7 @@ img {
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0rem;
 }
 
 .logo-image {
