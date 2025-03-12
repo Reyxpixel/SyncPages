@@ -169,7 +169,7 @@ img {
   letter-spacing: -0.02em;
   display: flex;
   align-items: center;
-  gap: 0rem; /* Increased from 0.5rem to 1rem for more space between logo and text */
+  gap: 0.5rem; /* Add gap between logo and text */
 }
 
 .logo-image {
@@ -310,6 +310,7 @@ img {
   z-index: 1;
 }
 
+/* Update the hero title to be responsive */
 .hero-title {
   font-size: 4.5rem;
   font-weight: 700;
@@ -329,7 +330,7 @@ img {
 }
 
 .hero-description {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   color: var(--muted-light);
   margin-bottom: 2.5rem;
   max-width: 36rem;
@@ -640,7 +641,7 @@ img {
   background-color: rgba(17, 17, 17, 0.5);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.75rem;
+  padding: 1.2rem;
   text-align: left;
   transition: var(--transition);
 }
@@ -1164,3 +1165,112 @@ img {
   }
 }
 
+/* Hide floating objects on mobile */
+@media (max-width: 768px) {
+  .floating-object {
+    width: 80px !important;
+    height: 80px !important;
+    opacity: 0.25 !important; /* Make even lighter on mobile */
+  }
+
+  /* Make hero title sizes consistent on mobile */
+  .hero-title-primary,
+  .hero-title-secondary {
+    font-size: 2.5rem; /* Same size for both lines */
+  }
+
+  /* Fix graph containers on mobile */
+  .chart-container {
+    height: auto; /* Auto height instead of fixed */
+    min-height: 200px; /* Minimum height */
+    max-height: 250px; /* Maximum height */
+    overflow: visible; /* Allow content to be visible */
+  }
+
+  /* Improve analytics cards on mobile */
+  .analytics-card {
+    padding: 1.5rem; /* Smaller padding on mobile */
+  }
+
+  /* Make analytics grid more responsive */
+  .analytics-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .analytics-card[style*="grid-column: span 2"] {
+    width: 100%;
+  }
+
+  /* Improve chart legends on mobile */
+  .chart-legend {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Add more granular breakpoints */
+@media (min-width: 480px) and (max-width: 767px) {
+  .hero-title {
+    font-size: 3.5rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-title {
+    font-size: 4rem;
+  }
+
+  /* Make analytics grid more responsive on tablets */
+  .analytics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .analytics-card[style*="grid-column: span 2"] {
+    grid-column: span 2 !important; /* Keep the span 2 for wider cards */
+  }
+}
+
+/* Improve chart responsiveness */
+.chart-container {
+  position: relative;
+  height: 300px;
+  margin-bottom: 1.5rem;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: var(--radius);
+  padding: 1rem;
+  overflow: hidden; /* Prevent overflow on small screens */
+}
+
+/* Make the manual charts responsive */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 250px; /* Slightly smaller on mobile */
+  }
+
+  #trafficChartManual::before {
+    letter-spacing: 0.5rem; /* Reduce letter spacing for day labels */
+    font-size: 0.7rem;
+  }
+
+  .chart-legend {
+    flex-wrap: wrap; /* Allow legend items to wrap */
+    gap: 0.75rem;
+  }
+
+  .legend-item {
+    font-size: 0.75rem;
+  }
+}
+
+/* Improve CTA section on mobile */
+@media (max-width: 768px) {
+  .cta-title {
+    font-size: 2rem;
+  }
+
+  .cta-description {
+    font-size: 1rem;
+  }
+}

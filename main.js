@@ -258,6 +258,9 @@ function createManualCharts() {
   // Create Sales Growth Chart
   const salesChart = document.getElementById("salesChartManual")
   if (salesChart) {
+    // Clear any existing content first
+    salesChart.innerHTML = ""
+
     // Create line chart with bars to represent data points
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     const withWebsiteData = [10, 25, 45, 70, 90, 120, 150, 180, 210, 250, 280, 320]
@@ -266,8 +269,13 @@ function createManualCharts() {
     // Find max value for scaling
     const maxValue = Math.max(...withWebsiteData)
 
-    // Create data points
-    months.forEach((month, index) => {
+    // Determine how many months to show based on screen width
+    const isMobile = window.innerWidth < 768
+    const monthsToShow = isMobile ? months.filter((_, i) => i % 3 === 0) : months
+    const dataIndices = isMobile ? [0, 3, 6, 9, 11] : [...Array(months.length).keys()]
+
+    // Create data points for selected indices only
+    dataIndices.forEach((index) => {
       // With website data point
       const withWebsiteHeight = (withWebsiteData[index] / maxValue) * 70
 
@@ -282,7 +290,7 @@ function createManualCharts() {
       withWebsitePoint.style.borderRadius = "50%"
       withWebsitePoint.style.transform = "translate(-50%, 50%)"
       withWebsitePoint.style.zIndex = "2"
-      withWebsitePoint.title = `${month}: ${withWebsiteData[index]}`
+      withWebsitePoint.title = `${months[index]}: ${withWebsiteData[index]}`
       salesChart.appendChild(withWebsitePoint)
 
       // Without website data point
@@ -298,19 +306,19 @@ function createManualCharts() {
       withoutWebsitePoint.style.borderRadius = "50%"
       withoutWebsitePoint.style.transform = "translate(-50%, 50%)"
       withoutWebsitePoint.style.zIndex = "2"
-      withoutWebsitePoint.title = `${month}: ${withoutWebsiteData[index]}`
+      withoutWebsitePoint.title = `${months[index]}: ${withoutWebsiteData[index]}`
       salesChart.appendChild(withoutWebsitePoint)
 
-      // Add month label
-      if (index % 2 === 0) {
+      // Add month label for selected months only
+      if (isMobile ? true : index % 2 === 0) {
         const monthLabel = document.createElement("div")
         monthLabel.className = "month-label"
-        monthLabel.textContent = month
+        monthLabel.textContent = months[index]
         monthLabel.style.position = "absolute"
         monthLabel.style.bottom = "10px"
         monthLabel.style.left = `${(index / (months.length - 1)) * 100}%`
         monthLabel.style.transform = "translateX(-50%)"
-        monthLabel.style.fontSize = "0.75rem"
+        monthLabel.style.fontSize = isMobile ? "0.65rem" : "0.75rem"
         monthLabel.style.color = "var(--muted)"
         salesChart.appendChild(monthLabel)
       }
@@ -320,11 +328,18 @@ function createManualCharts() {
   // Create Traffic Chart (Bar Chart)
   const trafficChart = document.getElementById("trafficChartManual")
   if (trafficChart) {
+    // Clear any existing content
+    trafficChart.innerHTML = ""
+
     const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
     const trafficData = [1200, 1900, 1700, 2100, 2300, 1500, 1300]
 
     // Find max value for scaling
     const maxValue = Math.max(...trafficData)
+
+    // Check if mobile
+    const isMobile = window.innerWidth < 768
+    const barWidth = isMobile ? "30px" : "40px"
 
     // Create bars
     days.forEach((day, index) => {
@@ -332,16 +347,17 @@ function createManualCharts() {
       const bar = document.createElement("div")
       bar.className = "bar"
       bar.style.height = `${barHeight}%`
+      bar.style.width = barWidth
       bar.title = `${day}: ${trafficData[index]} visitors`
 
       // Add value label on top of bar
       const valueLabel = document.createElement("div")
-      valueLabel.textContent = trafficData[index]
+      valueLabel.textContent = isMobile ? (trafficData[index] / 1000).toFixed(1) + "k" : trafficData[index]
       valueLabel.style.position = "absolute"
       valueLabel.style.top = "-25px"
       valueLabel.style.left = "50%"
       valueLabel.style.transform = "translateX(-50%)"
-      valueLabel.style.fontSize = "0.75rem"
+      valueLabel.style.fontSize = isMobile ? "0.65rem" : "0.75rem"
       valueLabel.style.color = "var(--muted-light)"
       bar.appendChild(valueLabel)
 
@@ -349,6 +365,15 @@ function createManualCharts() {
     })
   }
 }
+
+// Add window resize event to redraw charts when screen size changes
+window.addEventListener("resize", () => {
+  // Debounce the resize event
+  clearTimeout(window.resizeTimer)
+  window.resizeTimer = setTimeout(() => {
+    createManualCharts()
+  }, 250)
+})
 
 // Animations
 function initAnimations() {
