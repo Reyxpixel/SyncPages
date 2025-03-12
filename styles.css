@@ -471,7 +471,7 @@ img {
   background-color: rgba(0, 0, 0, 0.5);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 2.5rem;
+  padding: 1.5rem;
   transition: var(--transition);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -641,7 +641,7 @@ img {
   background-color: rgba(17, 17, 17, 0.5);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1rem;
+  padding: 0.5rem;
   text-align: left;
   transition: var(--transition);
 }
