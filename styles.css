@@ -330,7 +330,7 @@ img {
 }
 
 .hero-description {
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--muted-light);
   margin-bottom: 2.5rem;
   max-width: 36rem;
@@ -641,7 +641,7 @@ img {
   background-color: rgba(17, 17, 17, 0.5);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 1.2rem;
+  padding: 1rem;
   text-align: left;
   transition: var(--transition);
 }
