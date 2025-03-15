@@ -253,127 +253,136 @@ function showFormSuccess(message) {
   contactForm.prepend(successDiv)
 }
 
-// Create manual charts
-function createManualCharts() {
-  // Create Sales Growth Chart
-  const salesChart = document.getElementById("salesChartManual")
-  if (salesChart) {
-    // Clear any existing content first
-    salesChart.innerHTML = ""
+// Create Sales Growth Chart
+function createSalesChart() {
+  const salesChart = document.getElementById("salesChartManual");
+  if (!salesChart) return;
 
-    // Create line chart with bars to represent data points
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    const withWebsiteData = [10, 25, 45, 70, 90, 120, 150, 180, 210, 250, 280, 320]
-    const withoutWebsiteData = [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65]
+  // Clear any existing content
+  salesChart.innerHTML = "";
 
-    // Find max value for scaling
-    const maxValue = Math.max(...withWebsiteData)
+  // Simplified data with 5 months
+  const months = ["Jan", "Mar", "Jun", "Sep", "Dec"];
+  const data = [45, 65, 82, 91, 100];
+  const maxValue = Math.max(...data);
 
-    // Determine how many months to show based on screen width
-    const isMobile = window.innerWidth < 768
-    const monthsToShow = isMobile ? months.filter((_, i) => i % 3 === 0) : months
-    const dataIndices = isMobile ? [0, 3, 6, 9, 11] : [...Array(months.length).keys()]
+  // Calculate chart dimensions
+  const chartWidth = salesChart.offsetWidth;
+  const chartHeight = salesChart.offsetHeight;
+  const padding = 40; // Padding from edges
+  const usableWidth = chartWidth - (padding * 2);
 
-    // Create data points for selected indices only
-    dataIndices.forEach((index) => {
-      // With website data point
-      const withWebsiteHeight = (withWebsiteData[index] / maxValue) * 70
+  // Create connecting lines first (so they appear behind points)
+  for (let i = 0; i < months.length - 1; i++) {
+    const startX = padding + (i * (usableWidth / (months.length - 1)));
+    const endX = padding + ((i + 1) * (usableWidth / (months.length - 1)));
+    const startY = (1 - data[i] / maxValue) * (chartHeight - 60) + 30;
+    const endY = (1 - data[i + 1] / maxValue) * (chartHeight - 60) + 30;
 
-      const withWebsitePoint = document.createElement("div")
-      withWebsitePoint.className = "data-point"
-      withWebsitePoint.style.position = "absolute"
-      withWebsitePoint.style.bottom = `${withWebsiteHeight + 30}px`
-      withWebsitePoint.style.left = `${(index / (months.length - 1)) * 100}%`
-      withWebsitePoint.style.width = "8px"
-      withWebsitePoint.style.height = "8px"
-      withWebsitePoint.style.backgroundColor = "rgba(0, 153, 255, 0.8)"
-      withWebsitePoint.style.borderRadius = "50%"
-      withWebsitePoint.style.transform = "translate(-50%, 50%)"
-      withWebsitePoint.style.zIndex = "2"
-      withWebsitePoint.title = `${months[index]}: ${withWebsiteData[index]}`
-      salesChart.appendChild(withWebsitePoint)
+    const line = document.createElement("div");
+    line.className = "data-line";
+    const length = Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2));
+    const angle = Math.atan2(endY - startY, endX - startX);
 
-      // Without website data point
-      const withoutWebsiteHeight = (withoutWebsiteData[index] / maxValue) * 70
-      const withoutWebsitePoint = document.createElement("div")
-      withoutWebsitePoint.className = "data-point"
-      withoutWebsitePoint.style.position = "absolute"
-      withoutWebsitePoint.style.bottom = `${withoutWebsiteHeight + 30}px`
-      withoutWebsitePoint.style.left = `${(index / (months.length - 1)) * 100}%`
-      withoutWebsitePoint.style.width = "8px"
-      withoutWebsitePoint.style.height = "8px"
-      withoutWebsitePoint.style.backgroundColor = "rgba(0, 102, 204, 0.7)"
-      withoutWebsitePoint.style.borderRadius = "50%"
-      withoutWebsitePoint.style.transform = "translate(-50%, 50%)"
-      withoutWebsitePoint.style.zIndex = "2"
-      withoutWebsitePoint.title = `${months[index]}: ${withoutWebsiteData[index]}`
-      salesChart.appendChild(withoutWebsitePoint)
-
-      // Add month label for selected months only
-      if (isMobile ? true : index % 2 === 0) {
-        const monthLabel = document.createElement("div")
-        monthLabel.className = "month-label"
-        monthLabel.textContent = months[index]
-        monthLabel.style.position = "absolute"
-        monthLabel.style.bottom = "10px"
-        monthLabel.style.left = `${(index / (months.length - 1)) * 100}%`
-        monthLabel.style.transform = "translateX(-50%)"
-        monthLabel.style.fontSize = isMobile ? "0.65rem" : "0.75rem"
-        monthLabel.style.color = "var(--muted)"
-        salesChart.appendChild(monthLabel)
-      }
-    })
+    line.style.width = `${length}px`;
+    line.style.left = `${startX}px`;
+    line.style.top = `${startY}px`;
+    line.style.transform = `rotate(${angle}rad)`;
+    line.style.transformOrigin = "left center";
+    salesChart.appendChild(line);
   }
 
-  // Create Traffic Chart (Bar Chart)
-  const trafficChart = document.getElementById("trafficChartManual")
-  if (trafficChart) {
-    // Clear any existing content
-    trafficChart.innerHTML = ""
+  // Create data points and labels
+  months.forEach((month, i) => {
+    const x = padding + (i * (usableWidth / (months.length - 1)));
+    const y = (1 - data[i] / maxValue) * (chartHeight - 60) + 30;
+    
+    // Create point
+    const point = document.createElement("div");
+    point.className = "data-point";
+    point.style.left = `${x}px`;
+    point.style.top = `${y}px`;
+    point.title = `${month}: ${data[i]}%`;
+    salesChart.appendChild(point);
 
-    const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    const trafficData = [1200, 1900, 1700, 2100, 2300, 1500, 1300]
-
-    // Find max value for scaling
-    const maxValue = Math.max(...trafficData)
-
-    // Check if mobile
-    const isMobile = window.innerWidth < 768
-    const barWidth = isMobile ? "30px" : "40px"
-
-    // Create bars
-    days.forEach((day, index) => {
-      const barHeight = (trafficData[index] / maxValue) * 80
-      const bar = document.createElement("div")
-      bar.className = "bar"
-      bar.style.height = `${barHeight}%`
-      bar.style.width = barWidth
-      bar.title = `${day}: ${trafficData[index]} visitors`
-
-      // Add value label on top of bar
-      const valueLabel = document.createElement("div")
-      valueLabel.textContent = isMobile ? (trafficData[index] / 1000).toFixed(1) + "k" : trafficData[index]
-      valueLabel.style.position = "absolute"
-      valueLabel.style.top = "-25px"
-      valueLabel.style.left = "50%"
-      valueLabel.style.transform = "translateX(-50%)"
-      valueLabel.style.fontSize = isMobile ? "0.65rem" : "0.75rem"
-      valueLabel.style.color = "var(--muted-light)"
-      bar.appendChild(valueLabel)
-
-      trafficChart.appendChild(bar)
-    })
-  }
+    // Create label
+    const label = document.createElement("div");
+    label.className = "month-label";
+    label.textContent = month;
+    label.style.left = `${x}px`;
+    salesChart.appendChild(label);
+  });
 }
 
-// Add window resize event to redraw charts when screen size changes
-window.addEventListener("resize", () => {
-  // Debounce the resize event
-  clearTimeout(window.resizeTimer)
-  window.resizeTimer = setTimeout(() => {
-    createManualCharts()
-  }, 250)
-})
+// Create Traffic Chart
+function createTrafficChart() {
+  const trafficChart = document.getElementById("trafficChartManual");
+  if (!trafficChart) return;
+
+  // Clear any existing content
+  trafficChart.innerHTML = "";
+
+  const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const trafficData = [1200, 1900, 1700, 2100, 2300, 1500, 1300];
+  const maxValue = Math.max(...trafficData);
+
+  // Create container for bars and labels
+  const chartContainer = document.createElement("div");
+  chartContainer.style.display = "flex";
+  chartContainer.style.height = "100%";
+  chartContainer.style.width = "100%";
+  chartContainer.style.padding = "0 20px";
+  chartContainer.style.position = "relative";
+  trafficChart.appendChild(chartContainer);
+
+  // Create bars with their labels
+  days.forEach((day, index) => {
+    const barContainer = document.createElement("div");
+    barContainer.style.flex = "1";
+    barContainer.style.display = "flex";
+    barContainer.style.flexDirection = "column";
+    barContainer.style.alignItems = "center";
+    barContainer.style.gap = "8px";
+    
+    // Create the bar
+    const bar = document.createElement("div");
+    bar.className = "bar";
+    const barHeight = (trafficData[index] / maxValue) * 80;
+    bar.style.height = "0";
+    
+    // Create value label
+    const value = document.createElement("div");
+    value.className = "bar-value";
+    value.textContent = `${(trafficData[index] / 1000).toFixed(1)}k`;
+    bar.appendChild(value);
+    
+    // Create day label
+    const dayLabel = document.createElement("div");
+    dayLabel.style.color = "var(--muted)";
+    dayLabel.style.fontSize = "0.75rem";
+    dayLabel.textContent = day;
+    
+    // Add elements to container
+    barContainer.appendChild(bar);
+    barContainer.appendChild(dayLabel);
+    chartContainer.appendChild(barContainer);
+    
+    // Animate the bar height
+    setTimeout(() => {
+      bar.style.height = `${barHeight}%`;
+    }, index * 100);
+  });
+}
+
+// Initialize charts
+function createManualCharts() {
+  createSalesChart();
+  createTrafficChart();
+}
+
+// Call charts creation on load and resize
+window.addEventListener("load", createManualCharts);
+window.addEventListener("resize", createManualCharts);
 
 // Animations
 function initAnimations() {

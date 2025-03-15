@@ -511,38 +511,50 @@ img {
 
 /* Line Chart */
 #salesChartManual {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  display: block;
   height: 100%;
-  padding-bottom: 30px;
-  background-image: linear-gradient(to bottom, transparent 9%, rgba(255, 255, 255, 0.05) 10%);
-  background-size: 100% 10%;
+  padding: 0;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 9%,
+    rgba(255, 255, 255, 0.05) 10%
+  );
+  background-size: 100% 20%;
   position: relative;
 }
 
-#salesChartManual::before {
-  content: "";
+#salesChartManual .data-point {
+  width: 10px;
+  height: 10px;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to right, rgba(0, 153, 255, 0.8) 0%, rgba(0, 153, 255, 0.8) 100%) no-repeat,
-    linear-gradient(to right, rgba(0, 102, 204, 0.7) 0%, rgba(0, 102, 204, 0.7) 100%) no-repeat;
-  background-size: calc(100% - 20px) 2px, calc(100% - 20px) 2px;
-  background-position: 10px 30%, 10px 80%;
-  pointer-events: none;
+  background-color: var(--primary);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 0 15px rgba(0, 153, 255, 0.2);
 }
 
-#salesChartManual::after {
-  content: "";
+#salesChartManual .data-point:hover {
+  transform: translate(-50%, -50%) scale(1.3);
+  box-shadow: 0 0 20px rgba(0, 153, 255, 0.4);
+}
+
+#salesChartManual .data-line {
   position: absolute;
-  bottom: 30px;
-  left: 10px;
-  width: calc(100% - 20px);
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
+  height: 2px;
+  background-color: var(--primary);
+  opacity: 0.5;
+  transform-origin: left center;
+  z-index: 1;
+}
+
+#salesChartManual .month-label {
+  position: absolute;
+  bottom: 15px;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 0.75rem;
 }
 
 /* Pie Chart */
@@ -569,44 +581,56 @@ img {
 
 /* Bar Chart */
 #trafficChartManual {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-around;
   height: 100%;
-  padding: 0 20px 30px;
-  background-image: linear-gradient(to bottom, transparent 9%, rgba(255, 255, 255, 0.05) 10%);
-  background-size: 100% 10%;
   position: relative;
-}
-
-#trafficChartManual::after {
-  content: "";
-  position: absolute;
-  bottom: 30px;
-  left: 20px;
-  width: calc(100% - 40px);
-  height: 1px;
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-#trafficChartManual::before {
-  content: "Mon Tue Wed Thu Fri Sat Sun";
-  position: absolute;
-  bottom: 10px;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  font-size: 0.75rem;
-  color: var(--muted);
-  letter-spacing: 1.2rem;
-  padding-left: 0.6rem;
+  background-image: linear-gradient(
+    to bottom,
+    transparent 9%,
+    rgba(255, 255, 255, 0.05) 10%
+  );
+  background-size: 100% 20%;
 }
 
 #trafficChartManual .bar {
-  width: 40px;
-  background-color: rgba(0, 153, 255, 0.8);
+  width: 30px;
+  background: linear-gradient(180deg, var(--primary) 0%, rgba(0, 153, 255, 0.7) 100%);
   border-radius: 4px 4px 0 0;
   position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+#trafficChartManual .bar:hover {
+  transform: scaleY(1.02);
+  background: linear-gradient(180deg, var(--primary) 0%, rgba(0, 153, 255, 0.8) 100%);
+  box-shadow: 0 0 15px rgba(0, 153, 255, 0.3);
+}
+
+#trafficChartManual .bar-value {
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: var(--muted-light);
+  font-size: 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+#trafficChartManual .bar:hover .bar-value {
+  opacity: 1;
+}
+
+#trafficChartManual .days-container {
+  position: absolute;
+  bottom: 15px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  color: var(--muted);
+  font-size: 0.75rem;
 }
 
 .chart-legend {
@@ -655,7 +679,7 @@ img {
   font-size: 2rem;
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: 0.5rem;
+  margin: 0 0 0.5rem 0.5rem; /* Added left margin */
   letter-spacing: -0.03em;
 }
 
@@ -663,6 +687,7 @@ img {
   font-size: 0.7rem;
   color: var(--muted-light);
   line-height: 1.5;
+  margin-left: 0.5rem; /* Added left margin to match stat-value */
 }
 
 /* Testimonials Section */
@@ -1249,9 +1274,36 @@ img {
     height: 250px; /* Slightly smaller on mobile */
   }
 
-  #trafficChartManual::before {
-    letter-spacing: 0.5rem; /* Reduce letter spacing for day labels */
-    font-size: 0.7rem;
+  #salesChartManual {
+    padding: 0 10px 35px;
+  }
+
+  #salesChartManual .data-point {
+    width: 8px;
+    height: 8px;
+  }
+
+  #salesChartManual .month-label {
+    font-size: 0.65rem;
+    bottom: 12px;
+  }
+
+  #trafficChartManual {
+    padding: 0 5px 35px;
+  }
+
+  #trafficChartManual .bar {
+    width: 20px;
+  }
+
+  #trafficChartManual .bar-value {
+    font-size: 0.65rem;
+    top: -20px;
+  }
+
+  #trafficChartManual .days-container {
+    font-size: 0.65rem;
+    bottom: 12px;
   }
 
   .chart-legend {
